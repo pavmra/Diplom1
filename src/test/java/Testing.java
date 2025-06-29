@@ -1,21 +1,15 @@
-package tests;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.Mockito;
-import ru.practicum.Bun;
-import ru.practicum.Burger;
-import ru.practicum.Ingredient;
-import ru.practicum.IngredientType;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 
 import static org.junit.Assert.*;
-import static ru.practicum.IngredientType.*;
+
 
 
 @RunWith(Parameterized.class)
@@ -27,14 +21,14 @@ public class Testing {
     private Ingredient ingredient1;
     private Ingredient ingredient2;
 
-    // Параметры для тестирования разных комбинаций ингредиентов
+
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {SAUCE, SAUCE},
-                {FILLING, FILLING},
-                {SAUCE, FILLING},
-                {FILLING, SAUCE}
+                {IngredientType.SAUCE, IngredientType.SAUCE},
+                {IngredientType.FILLING, IngredientType.FILLING},
+                {IngredientType.SAUCE, IngredientType.FILLING},
+                {IngredientType.FILLING, IngredientType.SAUCE}
         });
     }
 
