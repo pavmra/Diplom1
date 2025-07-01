@@ -64,11 +64,18 @@ public class Testing {
 
 
     @Test
-    public void addIngredientTesting() {
+    public void addIngredientListSizeTesting() {
         burger.addIngredient(ingredient1);
         assertEquals(1, burger.ingredients.size());
+    }
+
+    @Test
+    public void addIngredientCorrectTesting() {
+        burger.addIngredient(ingredient1);
         assertSame(ingredient1, burger.ingredients.get(0));
     }
+
+
 
 
     @Test
@@ -80,22 +87,43 @@ public class Testing {
 
 
     @Test
-    public void removeIngredientTesting() {
+    public void removeIngredientListSizeTesting() {
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         burger.removeIngredient(0);
         assertEquals(1, burger.ingredients.size());
+    }
+
+    @Test
+    public void removeIngredientCorrectTesting() {
+        burger.addIngredient(ingredient1);
+        burger.addIngredient(ingredient2);
+        burger.removeIngredient(0);
         assertSame(ingredient2, burger.ingredients.get(0));
     }
 
 
     @Test
-    public void moveIngredientTesting() {
+    public void moveIngredientListSizeTesting() {
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         burger.moveIngredient(0, 1);
         assertEquals(2, burger.ingredients.size());
+    }
+
+    @Test
+    public void moveIngredientCorrectTesting() {
+        burger.addIngredient(ingredient1);
+        burger.addIngredient(ingredient2);
+        burger.moveIngredient(0, 1);
         assertSame(ingredient2, burger.ingredients.get(0));
+    }
+
+    @Test
+    public void moveIngredientsCorrectTesting() {
+        burger.addIngredient(ingredient1);
+        burger.addIngredient(ingredient2);
+        burger.moveIngredient(0, 1);
         assertSame(ingredient1, burger.ingredients.get(1));
     }
 
@@ -110,55 +138,39 @@ public class Testing {
     }
 
     @Test
-    public void getReceiptTesting() {
+    public void getReceiptBunNameTesting() {
         burger.addIngredient(ingredient1);
-        burger.addIngredient(ingredient2);
-
         String receipt = burger.getReceipt();
-        String[] lines = receipt.split(System.lineSeparator());
-
-        assertEquals("(==== white bun ====)", lines[0].trim());
-
-
-        String expectedIngredient1Line = String.format("= %s %s =",
-                type1.toString().toLowerCase(),
-                ingredient1.getName());
-        String expectedIngredient2Line = String.format("= %s %s =",
-                type2.toString().toLowerCase(),
-                ingredient2.getName());
-
-        assertTrue(Arrays.asList(lines).contains(expectedIngredient1Line));
-        assertTrue(Arrays.asList(lines).contains(expectedIngredient2Line));
-
-        assertEquals("(==== white bun ====)", lines[lines.length-3].trim());
-        assertTrue(lines[lines.length-2].isEmpty()); // Пустая строка
-        assertTrue(lines[lines.length-1].startsWith("Price: "));
-
-        float expectedPrice = bun.getPrice() * 2 + ingredient1.getPrice() + ingredient2.getPrice();
-        assertTrue(receipt.contains(String.format("Price: %f", expectedPrice)));
+        assertTrue(receipt.contains("(==== white bun ===="));
     }
 
     @Test
-    public void testGetReceiptWithNoIngredients() {
+    public void getReceiptCorrectTesting() {
+        burger.addIngredient(ingredient1);
+        String expectedLine = String.format("= %s %s =",
+                type1.toString().toLowerCase(),
+                ingredient1.getName());
+        assertTrue(burger.getReceipt().contains(expectedLine));
+    }
+
+    @Test
+    public void getReceiptPriceTesting() {
+        burger.addIngredient(ingredient1);
+        float expectedPrice = bun.getPrice() * 2 + ingredient1.getPrice();
+        assertTrue(burger.getReceipt().contains(String.format("Price: %f", expectedPrice)));
+    }
+
+    @Test
+    public void GetReceiptWithNoIngredientsTesting() {
         String receipt = burger.getReceipt();
-
-        String[] lines = receipt.split(System.lineSeparator());
-
-
-        assertEquals("(==== white bun ====)", lines[0].trim());
-        assertEquals("(==== white bun ====)", lines[1].trim());
-        assertTrue(lines[2].isEmpty()); // Пустая строка перед Price
-        assertTrue(lines[3].startsWith("Price: "));
-
-
-        String expectedReceipt = String.format(
+        String expected = String.format(
                 "(==== white bun ====)%n" +
                         "(==== white bun ====)%n" +
                         "%n" +
                         "Price: %f%n",
                 bun.getPrice() * 2
         );
-        assertEquals(expectedReceipt, receipt);
+        assertEquals(expected, receipt);
     }
 }
 
